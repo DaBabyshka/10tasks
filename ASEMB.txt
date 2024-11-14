@@ -1,0 +1,61 @@
+Задача 1.
+Индивидуальный вариант:
+N DQ ? ; число без знака 
+Не используя арифметические команды, реализовать оператор 
+(1 вариант) N := N * 2
+Решение должно содержать не более трёх команд.
+
+Код программы:
+section .data
+    N dq 5
+
+section .bss
+
+section .text
+    global _start
+
+_start:
+    mov rax, [N]
+    shl rax, 1
+    mov [N], rax
+
+    mov rdi, fmt
+    mov rsi, [N]
+    xor rax, rax
+    call printf
+
+    mov rax, 60
+    xor rdi, rdi
+    syscall
+
+section .rodata
+    fmt db "Result: %d", 10, 0
+
+
+
+1 вариант: Реализовать процедуру Padd(x,a), которая реализует оператор x:=x+a. Передача параметров в стеке, стандартные соглашения о связях.
+
+Код программы:
+section .data
+    x dd 5
+    a dd 3
+
+section .text
+    global _start
+
+Padd:
+    push ebp
+    mov ebp, esp
+    mov eax, [ebp+8]
+    add eax, [ebp+12]
+    mov [ebp+8], eax
+    pop ebp
+    ret
+
+_start:
+    push dword [a]
+    push dword [x]
+    call Padd
+    mov eax, 1
+    int 0x80
+
